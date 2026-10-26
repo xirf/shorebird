@@ -1,0 +1,16 @@
+name: saturn_assets
+description: Downloaded Flutter asset overlays for Saturn and Shorebird patches.
+version: 0.1.0
+publish_to: none
+environment:
+  sdk: ^3.9.0
+dependencies:
+  flutter:
+    sdk: flutter
+  archive: ^4.5.2
+  crypto: ^3.0.7
+  path_provider: ^2.1.6
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
