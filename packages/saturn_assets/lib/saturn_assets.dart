@@ -15,6 +15,25 @@ class SaturnAssets {
   final int patchNumber;
   final String source;
 
+  static final Set<String> _loadedFonts = <String>{};
+
+  /// Registers an OTF or TTF file from the active overlay with Flutter.
+  /// Call this before building text or icons that use [family].
+  Future<void> loadFont({required String family, required String asset}) async {
+    if (family.trim().isEmpty || !_safePath(asset)) {
+      throw ArgumentError('Font family and asset path must be valid');
+    }
+    final key = '$patchNumber\u0000$family\u0000$asset';
+    if (!_loadedFonts.add(key)) return;
+    try {
+      final loader = FontLoader(family)..addFont(bundle.load(asset));
+      await loader.load();
+    } catch (_) {
+      _loadedFonts.remove(key);
+      rethrow;
+    }
+  }
+
   /// Call this before runApp, after ShorebirdUpdater.readCurrentPatch().
   /// The bundle must be installed with DefaultAssetBundle in MaterialApp.builder.
   static Future<SaturnAssets> load({
